@@ -6,13 +6,12 @@ import {createModal} from "../../../../../../store/modal/actions/actions";
 export default function InactiveJobList({data}) {
 
     const modal = useModal()
-    console.log(data)
 
     return (
         <motion.div
             initial={{opacity: 0}}
             animate={{opacity: 1}}
-            className="flex gap-4"
+            className="grid grid-cols-3 gap-4"
         >
             {data?.filter((d) => d.status === "inactive" || d.status === "Finished")?.map((request, index) => (
                 <ul key={index}

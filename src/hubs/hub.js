@@ -1,7 +1,7 @@
 import {HubConnectionBuilder} from "@microsoft/signalr";
 import axios from "axios";
 
-export const initializeSignalRConnection = async (setConnection, setMessages) => {
+export const initializeSignalRConnection = async (setConnection) => {
     const conn = new HubConnectionBuilder()
         .withUrl("http://localhost:5085/chat")
         .withAutomaticReconnect()
@@ -10,14 +10,13 @@ export const initializeSignalRConnection = async (setConnection, setMessages) =>
     try {
         await conn.start();
         setConnection(conn);
-        conn.on("ReceiveMessage", (newMessage) => {
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
-        });
-    } catch (err) {
+        conn.on("ReceiveMessage");
+    } catch (error) {
+        console.log(error)
     }
 };
 
-export const sendMessage = async (e, message, user, toUserId, setMessages, setMessage) => {
+export const sendMessage = async (e, message, user, toUserId, setMessage) => {
     e.preventDefault();
     if (!message.trim()) return;
 
@@ -27,13 +26,8 @@ export const sendMessage = async (e, message, user, toUserId, setMessages, setMe
             ToUserId: parseInt(toUserId),
             Message: message,
         });
-
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            response.data.Message
-        ]);
-
         setMessage("");
     } catch (error) {
+        console.log(error)
     }
 };

@@ -2,7 +2,7 @@ import {FaStar} from "react-icons/fa";
 import {formatDate} from "../../../../utils/date/date";
 
 export default function UserComments({comments}) {
-    return (
+    return comments.length > 0 ? (
         <ul className="flex flex-col gap-y-3 pt-3">
             {comments
                 .slice()
@@ -26,5 +26,9 @@ export default function UserComments({comments}) {
                     </li>
                 ))}
         </ul>
+    ) : (
+        <div className="flex items-center justify-center">
+            <span className="text-center pt-7 text-sm text-zinc-700">Bu Kullanıcıya ait herhangi bir yorum bulunmamaktadır.</span>
+        </div>
     )
 }

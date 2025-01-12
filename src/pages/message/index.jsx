@@ -13,19 +13,18 @@ export default function MessagePage() {
     const {toUserId} = useParams();
     const [connection, setConnection] = useState(null);
     const [message, setMessage] = useState("");
-    const [messages, setMessages] = useState([]);
     const {data: initialMessages} = useFetch(`http://localhost:5085/api/Chat?userId=${user.id}&toUserId=${toUserId}`);
 
     useEffect(() => {
-        setMessages(initialMessages);
-        initializeSignalRConnection(setConnection, setMessages);
+        initializeSignalRConnection(setConnection);
     }, []);
 
+    console.log(initialMessages)
 
     return (
         <form className="bg-[#f3f3f3] h-[calc(100vh-107px)] relative flex flex-col justify-between">
             <ul className="flex flex-col gap-y-3 pt-20 px-16 h-[600px] overflow-y-auto">
-                {messages?.map((msg, index) => (
+                {initialMessages?.map((msg, index) => (
                     <li
                         key={index}
                         className={classNames(
@@ -51,7 +50,7 @@ export default function MessagePage() {
                         className="w-full p-3 border text-sm border-zinc-300 rounded-sm shadow-sm outline-none focus:border-zinc-500"
                     />
                     <button
-                        onClick={(e) => sendMessage(e, message, user, toUserId, setMessages, setMessage)}
+                        onClick={(e) => sendMessage(e, message, user, toUserId, setMessage)}
                         disabled={!message}
                         className={`flex items-center justify-center h-10 w-10 rounded-full ${!message ? "bg-primary opacity-70" : "bg-primary"} text-white`}
                     >

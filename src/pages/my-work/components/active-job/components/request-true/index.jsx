@@ -9,11 +9,11 @@ import {updateRequest} from "../../../../../../api/request/put";
 import {Link} from "react-router-dom";
 import {setChatType} from "../../../../../../store/chatType/actions/actions";
 
-export default function RequestList({ offers }) {
+export default function RequestList({offers}) {
 
     const [visibleMenuIndex, setVisibleMenuIndex] = useState(null);
-    const { user } = useAuth();
-    const { data: requests } = useFetch(`/api/Request/get-request/${user.id}`);
+    const {user} = useAuth();
+    const {data: requests} = useFetch(`/api/Request/get-request/${user.id}`);
     const modals = useModal();
 
     const activeOffers = offers.flat();
@@ -21,7 +21,15 @@ export default function RequestList({ offers }) {
     return (
         <div className="flex gap-x-2 gap-y-4">
             {requests?.filter((request) => request.status === "active")?.map((request, index) => {
+
                 const relatedOffers = activeOffers.filter((offer) => offer.requestId === request.id);
+                const offerStatus = relatedOffers.some((offer) => offer.status === "Accepted")
+                const offerAsAbject = relatedOffers.reduce((acc, curr) => {
+                    if (!acc[curr.id]) {
+                        acc = curr
+                    }
+                    return acc
+                }, {})
 
                 return (
                     <ul key={index} className="w-[350px] h-auto bg-white border border-zinc-200 rounded-md shadow-md">
@@ -29,11 +37,27 @@ export default function RequestList({ offers }) {
                             onClick={() => setVisibleMenuIndex(visibleMenuIndex === index ? null : index)}
                             className="flex justify-end px-2 pt-2 relative cursor-pointer"
                         >
-                            <SlOptionsVertical className="font-normal text-sm" />
+                            <SlOptionsVertical className="font-normal text-sm"/>
 
                             {visibleMenuIndex === index && (
                                 <ul className="absolute top-full right-4 bg-white w-auto h-auto px-5 py-2 border border-zinc-300 shadow-md flex flex-col gap-y-3">
-                                    {relatedOffers.length === 0 ? (
+                                    {offerStatus ? (
+                                        <>
+                                            <Link
+                                                onClick={() => setChatType("offer")}
+                                                to={`/mesajlas/${offerAsAbject.userId}`}
+                                                className="text-sm hover:text-zinc-500"
+                                            >
+                                                İletişime Geç
+                                            </Link>
+                                            <li
+                                                onClick={() => createModal("finish-job", relatedOffers)}
+                                                className="text-sm hover:text-zinc-500"
+                                            >
+                                                İşi Bitir
+                                            </li>
+                                        </>
+                                    ) : (
                                         <>
                                             <li
                                                 onClick={() => createModal("active-request", request)}
@@ -46,22 +70,6 @@ export default function RequestList({ offers }) {
                                                 className="text-sm hover:text-zinc-500"
                                             >
                                                 Talebi İptal Et
-                                            </li>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Link
-                                                onClick={() => setChatType("offer")}
-                                                to="/mesajlas"
-                                                className="text-sm hover:text-zinc-500"
-                                            >
-                                                İletişime Geç
-                                            </Link>
-                                            <li
-                                                onClick={() => createModal("finish-job", relatedOffers)}
-                                                className="text-sm hover:text-zinc-500"
-                                            >
-                                                İşi Bitir
                                             </li>
                                         </>
                                     )}
@@ -101,11 +109,11 @@ export default function RequestList({ offers }) {
                         )}
 
                         <div className="grid p-2">
-                            {relatedOffers.length > 0 ? (
+                            {offerStatus ? (
                                 <Button
                                     onClick={() => setChatType("offer")}
                                     as={Link}
-                                    to="/mesajlas"
+                                    to={`/mesajlas/${offerAsAbject.userId}`}
                                     variant="filled-button"
                                     size="large"
                                 >
@@ -126,7 +134,7 @@ export default function RequestList({ offers }) {
                 );
             })}
 
-            {modals.length > 0 && <Modals />}
+            {modals.length > 0 && <Modals/>}
         </div>
     );
 }

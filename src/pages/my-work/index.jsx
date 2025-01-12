@@ -5,15 +5,43 @@ import {motion} from "framer-motion";
 import {SERVICE_LIST} from "../../utils/service-list";
 import {IoPersonSharp, IoStar} from "react-icons/io5";
 import {Link} from "react-router-dom";
+import {useAuth} from "../../store/hooks/hooks";
+import useFetch from "../../hooks/get";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 export default function MyWorkPage() {
+
+    const { user } = useAuth();
+    const { data } = useFetch(`/api/Request/get-request/${user.id}`);
+    const [offers, setOffers] = useState([]);
+
+    useEffect(() => {
+        const fetchOffer = async () => {
+            try {
+                if (Array.isArray(data)) {
+                    const responses = await Promise.all(
+                        data.filter(d => d.status === "active").map(o =>
+                            axios.get(`/api/Offer/get-offer-by-request-id/${o.id}`)
+                        )
+                    );
+                    setOffers(responses.map(response => response.data));
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchOffer();
+    }, [data]);
+
 
     return (
         <motion.div
             initial={{opacity: 0}}
             animate={{opacity: 1}}
         >
-            <Tabs className="w-full h-[450px] bg-[#f3f3f3] pt-10 flex flex-col items-center">
+            <Tabs className="w-full min-h-[450px] bg-[#f3f3f3] pt-10 flex flex-col items-center">
                 <TabList className="flex bg-[#c5c6cc] rounded-md p-1 shadow-md">
                     <Tab
                         className="rounded-md text-zinc-500 p-1 cursor-pointer transition-all duration-200 text-sm w-40 text-center aria-selected:bg-white aria-selected:shadow aria-selected:text-primary aria-selected:border-gray-300 border border-transparent hover:text-gray-700"
@@ -29,10 +57,10 @@ export default function MyWorkPage() {
 
                 <div className="pt-10 flex items-center justify-center">
                     <TabPanel>
-                        <ActiveJob/>
+                        <ActiveJob offers={offers} data={data} />
                     </TabPanel>
                     <TabPanel>
-                        <OldJob/>
+                        <OldJob data={data} />
                     </TabPanel>
                 </div>
             </Tabs>
