@@ -1,8 +1,8 @@
 import {createBrowserRouter} from "react-router-dom";
 import Weblayout from "../layout/web-layout";
 import HomePage from "../pages/home";
-import VerifiedLayout from "../layout/verified-layout";
-import AccountLayout from "../layout/account-layout";
+import VerifiedLayout from "../layout/web-layout/layouts/verified-layout";
+import AccountLayout from "../layout/web-layout/layouts/account-layout";
 import AccountDetails from "../pages/account/pages/accound-details";
 import ChangePassword from "../pages/account/pages/change-password";
 import PaymentMethod from "../pages/account/pages/payment-method";
@@ -11,20 +11,23 @@ import HelpCenter from "../pages/account/pages/help-center";
 import DataPrivacy from "../pages/account/pages/data-privacy";
 import Serve from "../pages/account/pages/serve";
 import MyWorkPage from "../pages/my-work";
-import MyWorkLayout from "../layout/my-work-layout";
-import QuestionsLayout from "../layout/questions-layout";
+import MyWorkLayout from "../layout/web-layout/layouts/my-work-layout";
+import QuestionsLayout from "../layout/web-layout/layouts/questions-layout";
 import QuestionsPage from "../pages/questions";
-import ServerLayout from "../layout/serve-layout";
+import ServerLayout from "../layout/web-layout/layouts/serve-layout";
 import MyServe from "../pages/serve/pages/my-serve";
 import AddServe from "../pages/serve/pages/add-serve";
 import ServeDetails from "../pages/serve/pages/serve-details";
 import MyOpportunites from "../pages/serve/pages/my-opportunites";
 import OfferPage from "../pages/serve/pages/offer";
-import UserInformationLayout from "../layout/user-profile-layout";
+import UserInformationLayout from "../layout/web-layout/layouts/user-profile-layout";
 import MyJob from "../pages/serve/pages/my-job";
-import MessagesLayout from "../layout/messages-layout";
+import MessagesLayout from "../layout/web-layout/layouts/messages-layout";
 import MessagePage from "../pages/message";
 import UserProfilePage from "../pages/user-profile";
+import AdminLayout from "../layout/admin-layout";
+import UserPage from "../pages/admin/pages/users";
+import StatisticPage from "../pages/admin/pages/statistic";
 
 export const routes = createBrowserRouter(
     [
@@ -144,6 +147,20 @@ export const routes = createBrowserRouter(
                     path: "/mesajlas/:toUserId",
                     element: <MessagePage/>
                 },
+            ]
+        },
+        {
+            path: "/admin-panel",
+            element: <AdminLayout/>,
+            children: [
+                {
+                    path: "/admin-panel/kullanicilar",
+                    element: <UserPage/>
+                },
+                {
+                    path: "/admin-panel/istatistik",
+                    element: <StatisticPage/>
+                }
             ]
         }
     ]

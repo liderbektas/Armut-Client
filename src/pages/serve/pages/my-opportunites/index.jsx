@@ -8,7 +8,7 @@ import NoOffer from "./components/no-offer";
 export default function MyOpportunities() {
 
     const {user} = useAuth()
-    const {data: opportunites} = useFetch(`/api/Serve/get-not-accepted-request/${user.id}`);
+    const {data: opportunites} = useFetch(`/api/Request/get-not-accepted-request/${user.id}`);
 
     return (
         <motion.div

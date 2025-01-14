@@ -1,4 +1,7 @@
 const FormBuilder = ({questions, setFieldValue, setFormData}) => {
+
+    console.log(questions)
+
     return (
         <>
             {questions.map((question, index) => {

@@ -7,7 +7,7 @@ import JobDetails from "./components/job-details";
 export default function MyJob() {
 
     const {user} = useAuth()
-    const {data: myJobs} = useFetch(`/api/Serve/get-accepted-request/${user.id}`);
+    const {data: myJobs} = useFetch(`/api/Offer/get-accepted-request/${user.id}`);
     const {data: completeOffer} = useFetch(`/api/Offer/get-finish/${user.id}`);
 
     return (

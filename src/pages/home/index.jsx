@@ -48,15 +48,25 @@ export default function HomePage() {
                                 Ara
                             </div>
                             <ul className="absolute bg-white text-black w-full shadow-lg h-auto overflow-y-auto top-full left-0">
-                                {list?.map((item, index) => (
-                                    <Link
-                                        to={`/sorular/${item.id}`}
-                                        key={index}
-                                        className="px-5 py-3 hover:bg-zinc-200 z-10 cursor-pointer flex flex-col"
-                                    >
-                                        {item.service}
-                                    </Link>
-                                ))}
+                                {list?.map((item, index) =>
+                                    user ? (
+                                        <Link
+                                            to={`/sorular/${item.id}`}
+                                            key={index}
+                                            className="px-5 py-3 hover:bg-zinc-200 z-10 cursor-pointer flex flex-col"
+                                        >
+                                            {item.service}
+                                        </Link>
+                                    ) : (
+                                        <li
+                                            onClick={() => createModal("login")}
+                                            key={index}
+                                            className="px-5 py-3 hover:bg-zinc-200 z-10 cursor-pointer flex flex-col"
+                                        >
+                                            {item.service}
+                                        </li>
+                                    )
+                                )}
                             </ul>
                         </div>
                     </div>

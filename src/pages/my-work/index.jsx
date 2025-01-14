@@ -13,7 +13,7 @@ import axios from "axios";
 export default function MyWorkPage() {
 
     const { user } = useAuth();
-    const { data } = useFetch(`/api/Request/get-request/${user.id}`);
+    const { data } = useFetch(`/api/Request/get-request/${user?.id}`);
     const [offers, setOffers] = useState([]);
 
     useEffect(() => {

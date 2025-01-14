@@ -1,14 +1,14 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "../../store/hooks/hooks";
-import {useState} from "react";
-import {SERVICE_LIST} from "../../utils/service-list";
 import {IoMdSearch} from "react-icons/io";
-import {IoClose} from "react-icons/io5";
+import {useAuth} from "../../../../../../store/hooks/hooks";
 import {RiArrowDropDownLine} from "react-icons/ri";
-import {setLogout} from "../../store/auth/actions/actions";
+import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {setLogout} from "../../../../../../store/auth/actions/actions";
 import toast from "react-hot-toast";
+import {SERVICE_LIST} from "../../../../../../utils/service-list";
+import {IoClose} from "react-icons/io5";
 
-export default function ServeAndWorkHeader() {
+export default function MyWorkHeader() {
 
     const navigate = useNavigate();
     const {user} = useAuth();
@@ -73,15 +73,22 @@ export default function ServeAndWorkHeader() {
                         )}
 
                         {show && (
-                            <ul className="absolute top-9  w-[150px] -left-10 z-10 bg-white h-auto px-5 py-3 border border-zinc-300 shadow flex flex-col gap-y-3">
+                            <ul className="absolute top-9 w-[150px] -left-[35px] z-10 bg-white h-auto px-5 py-3 border border-zinc-300 shadow flex flex-col gap-y-3">
                                 <Link to="/hesabım/hesap-detayları">Hesabım</Link>
+                                {user?.role === "Admin" && (
+                                    <Link
+                                        to={"/admin-panel/istatistik"}>
+                                        Admin Panel
+                                    </Link>
+                                )}
                                 <li
                                     onClick={() => {
                                         setLogout()
                                         toast.success("Çıkış yapıldı")
                                         navigate("/")
                                     }}
-                                >Çıkış Yap
+                                >
+                                    Çıkış Yap
                                 </li>
                             </ul>
                         )}

@@ -39,10 +39,13 @@ const QuestionsPage = () => {
                         answers: initialValues
                     }}
                     onSubmit={(values) => {
-                       //
+                        //
                     }}
                 >
                     {({values, setFieldValue}) => {
+                        const currentQuestions = list.questions.filter(
+                            (q, index) => index === values.step - 1)
+
                         const nextHandle = () => {
                             if (values.step < values.lastStep) {
                                 setFieldValue("step", values.step + 1);
@@ -56,10 +59,6 @@ const QuestionsPage = () => {
                                 setFieldValue("step", values.step - 1);
                             }
                         };
-
-                        const currentQuestions = list.questions.filter(
-                            (q, index) => index === values.step - 1
-                        );
 
                         return (
                             <div className="w-full max-w-lg border border-zinc-200 rounded-md p-6">

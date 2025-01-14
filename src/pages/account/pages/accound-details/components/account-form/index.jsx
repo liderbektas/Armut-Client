@@ -13,10 +13,10 @@ export default function AccountForm() {
     const modal = useModal();
 
     const [userState, setUserState] = useState({
-        name: user.name || "",
-        email: user.email || "",
-        phone: user.phone || "",
-        address: user.address || "",
+        name: user?.name || "",
+        email: user?.email || "",
+        phone: user?.phone || "",
+        address: user?.address || "",
     });
 
     const changeHandler = (e) => {

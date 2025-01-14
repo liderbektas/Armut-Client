@@ -15,7 +15,6 @@ export const signIn = async (Email, Password) => {
         toast.success("Giriş Başarılı");
         destroyAllModal()
     } catch (error) {
-        console.log(error)
         toast.error("Email ya da Şifre Hatalı");
     }
 }

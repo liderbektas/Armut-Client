@@ -85,28 +85,50 @@ export default function RequestList({offers}) {
                         <div className="w-full px-5 border border-zinc-100"></div>
 
                         {relatedOffers.length > 0 ? (
-                            relatedOffers.map((offer, index) => (
-                                <div key={index} className="flex flex-col items-center gap-y-2 p-2">
-                                    <h3 className="text-xs font-medium">
-                                        {offer.status === "Accepted" ? "İş Sahibi" : "Gelen Teklifler"}
-                                    </h3>
-                                    <div className="flex items-center gap-x-2">
-                                        <div className="flex flex-col items-center">
-                                            <span
-                                                onClick={() => createModal("offer", offer)}
-                                                className="h-10 w-10 rounded-full bg-yellow-700 text-white font-medium flex items-center justify-center cursor-pointer"
-                                            >
-                                                {offer.user.name.slice(0, 1)}
-                                            </span>
+                            <div className="flex justify-center flex-row items-center gap-x-4 p-2">
+                                {relatedOffers.some(offer => offer.status === "Accepted") ? (
+                                    relatedOffers
+                                        .filter(offer => offer.status === "Accepted")
+                                        .map((offer, index) => (
+                                            <div key={index} className="flex flex-col items-center gap-y-2">
+                                                <h3 className="text-xs font-medium">İş Sahibi</h3>
+                                                <div className="flex items-center gap-x-2">
+                                                    <div className="flex flex-col items-center">
+                                                        <span
+                                                            onClick={() => createModal("offer", offer)}
+                                                            className="h-10 w-10 rounded-full bg-yellow-700 text-white font-medium flex items-center justify-center cursor-pointer"
+                                                        >
+                                                            {offer.user.name.slice(0, 1)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                ) : (
+                                    relatedOffers.map((offer, index) => (
+                                        <div key={index} className="flex flex-col items-center gap-y-2">
+                                            <h3 className="text-xs font-medium
+                                            ">Gelen Teklifler</h3>
+                                            <div className="flex items-center gap-x-2">
+                                                <div className="flex flex-col items-center">
+                                                    <span
+                                                        onClick={() => createModal("offer", offer)}
+                                                        className="h-10 w-10 rounded-full bg-yellow-700 text-white font-medium flex items-center justify-center cursor-pointer"
+                                                    >
+                                                        {offer.user.name.slice(0, 1)}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            ))
+                                    ))
+                                )}
+                            </div>
                         ) : (
                             <div className="text-zinc-300 text-center p-2 py-5 text-sm">
                                 Talebin için teklifler toplanıyor. Teklifler gelmeye başladığında hemen bildireceğiz.
                             </div>
                         )}
+
 
                         <div className="grid p-2">
                             {offerStatus ? (

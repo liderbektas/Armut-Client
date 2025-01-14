@@ -11,7 +11,7 @@ export const createJob = async (offerId, Description) => {
         destroyAllModal()
     } catch (error) {
         if (error.response) {
-            console.log(error.response);
+            toast.error(error.response.data.message)
         }
     }
 }

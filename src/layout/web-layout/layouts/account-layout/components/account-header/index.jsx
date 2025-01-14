@@ -1,17 +1,17 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "../../store/hooks/hooks";
-import {useState} from "react";
-import {SERVICE_LIST} from "../../utils/service-list";
 import {IoMdSearch} from "react-icons/io";
-import {IoClose} from "react-icons/io5";
+import {useAuth} from "../../../../../../store/hooks/hooks";
 import {RiArrowDropDownLine} from "react-icons/ri";
-import {setLogout} from "../../store/auth/actions/actions";
+import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {setLogout} from "../../../../../../store/auth/actions/actions";
 import toast from "react-hot-toast";
+import {SERVICE_LIST} from "../../../../../../utils/service-list";
+import {IoClose} from "react-icons/io5";
 
-export default function ServeAndWorkHeader() {
+export default function AccountHeader() {
 
     const navigate = useNavigate();
-    const {user} = useAuth();
+    const {user} = useAuth()
     const [show, setShow] = useState(false);
     const [search, setSearch] = useState("");
 
@@ -27,9 +27,11 @@ export default function ServeAndWorkHeader() {
 
     return (
         <div className="h-16 w-full flex justify-between items-center border-b border-zinc-300 shadow w-full">
+
             <div className="flex items-center gap-x-5 px-5">
                 <Link to="/">
                     <img className="h-9" src="https://cdn.armut.com/images/themes/armut/logo-negative.png"/>
+
                 </Link>
                 <div className="flex items-center ml-3 border-zinc-300 border px-2 w-[400px] shadow relative">
                     <IoMdSearch/>
@@ -42,14 +44,13 @@ export default function ServeAndWorkHeader() {
                     {search && (
                         <IoClose onClick={() => {
                             setSearch("")
-                        }} />
+                        }}/>
                     )}
                     <ul className="absolute bg-white text-black w-full shadow-lg h-auto overflow-y-auto top-full left-0 mt-1">
                         {list?.map((item, index) => (
-                            <Link to={`/sorular/${item.id}`} key={index} className="px-5 py-2 hover:bg-zinc-200 cursor-pointer flex flex-col">
-                                <>
-                                    {item.service}
-                                </>
+                            <Link to={`/sorular/${item.id}`} key={index}
+                                  className="px-5 py-2 hover:bg-zinc-200 cursor-pointer flex flex-col">
+                                {item.service}
                             </Link>
                         ))}
                     </ul>
@@ -64,7 +65,9 @@ export default function ServeAndWorkHeader() {
                         className="h-8 w-8 text-sm font-semibold rounded-full bg-[#c96ab1] flex items-center justify-center text-white ">
                         {user?.name.charAt(0).toUpperCase()}
                     </span>
-                    <div onClick={() => showHandler()} className="flex items-center gap-x-2 cursor-pointer relative">
+                    <div
+                        onClick={() => showHandler()}
+                        className="flex items-center gap-x-2 cursor-pointer relative">
                         <span className="text-md font-semibold">{user?.name}</span>
                         {show ? (
                             <RiArrowDropDownLine className="text-3xl rotate-180"/>
@@ -73,8 +76,14 @@ export default function ServeAndWorkHeader() {
                         )}
 
                         {show && (
-                            <ul className="absolute top-9  w-[150px] -left-10 z-10 bg-white h-auto px-5 py-3 border border-zinc-300 shadow flex flex-col gap-y-3">
+                            <ul className="absolute top-9 w-[150px] -left-[35px] z-10 bg-white h-auto px-5 py-3 border border-zinc-300 shadow flex flex-col gap-y-3">
                                 <Link to="/hesabım/hesap-detayları">Hesabım</Link>
+                                {user?.role === "Admin" && (
+                                    <Link
+                                        to={"/admin-panel/istatistik"}>
+                                        Admin Panel
+                                    </Link>
+                                )}
                                 <li
                                     onClick={() => {
                                         setLogout()
@@ -88,6 +97,7 @@ export default function ServeAndWorkHeader() {
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }

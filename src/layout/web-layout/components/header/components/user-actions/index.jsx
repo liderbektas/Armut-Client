@@ -11,6 +11,7 @@ export default function UserActions() {
     const navigate = useNavigate()
     const {user} = useAuth();
     const modal = useModal();
+    console.log(user)
 
     return (
         <div className="flex items-center gap-x-2">
